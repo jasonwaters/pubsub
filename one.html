@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <title>One</title>
+    <script src="relay.js"></script>
+</head>
+<body>
+<h3>Messages received appear below&hellip;</h3>
+<ul id="whisper_list">
+</ul>
+
+<script type="text/javascript">
+    relay.on('whisper', function(data) {
+        addListItem('whisper_list', 'Received ' + data.text);
+        return {message_response: data.text.split('').reverse().join('')};
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <title>Two</title>
+    <script src="relay.js"></script>
+</head>
+<body>
+    <h3>Enter text in the input box below to send a message to the iframe on the left.</h3>
+
+    <form id="sendForm">
+        <input type="text" id="message_input" placeholder="Enter a Message..." />
+        <button type="submit">Send</button>
+    </form>
+
+    <ul id="whisper_response_list">
+    </ul>
+
+    <script type="text/javascript">
+        var frame1 = window.parent.document.getElementById('frame1').contentWindow;
+        var input = document.getElementById('message_input');
+
+        document.getElementById("sendForm").addEventListener('submit', function(evt) {
+            evt.preventDefault();
+
+            var textMessage = input.value;
+            if(textMessage.length > 0) {
+
+                relay.send(frame1, 'whisper', {text: textMessage}, function(err, data) {
+                    if(err) {
+                        addListItem('whisper_response_list', 'Error sending "' + textMessage + '" - ' + err.message);
+                    }else {
+                        addListItem('whisper_response_list', 'Successfully sent "' + textMessage + '" and received a response of "' + data.message_response + '"');
+                    }
+                });
+
+            }
+
+            input.value = "";
+        });
+
+
+    </script>
+</body>
+</html>
